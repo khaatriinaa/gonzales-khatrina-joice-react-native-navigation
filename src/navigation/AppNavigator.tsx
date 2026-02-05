@@ -10,7 +10,7 @@ import CheckoutScreen from "../screens/CheckoutScreen";
 import { useTheme } from "../contexts/ThemeContext";
 import { useCart } from "../contexts/CartContext";
 
-enableScreens(true);
+//enableScreens(true);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,6 +21,7 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
+    detachInactiveScreens={false}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: dark ? "#fff" : "#1E90FF",
