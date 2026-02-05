@@ -22,11 +22,6 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
 
-        {/* BACK */}
-        <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
-          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
-        </Pressable>
-
         {/* HEADER */}
         <View
           style={{
@@ -47,7 +42,6 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
           />
         </View>
 
-        {/* CONTENT */}
         {cart.length === 0 ? (
           <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
         ) : (
@@ -69,13 +63,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                 >
                   <Image
                     source={{ uri: item.image }}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: 8,
-                      marginRight: 12,
-                    }}
-                    resizeMode="cover"
+                    style={{ width: 80, height: 80, borderRadius: 8, marginRight: 12 }}
                   />
                   <View style={{ flex: 1 }}>
                     <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
@@ -85,7 +73,6 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                       ₱{item.price * item.quantity}
                     </Text>
 
-                    {/* QUANTITY */}
                     <View style={{ flexDirection: "row", marginTop: 8 }}>
                       <Pressable onPress={() => decrease(item.id)}>
                         <Text style={{ fontSize: 18 }}>➖</Text>

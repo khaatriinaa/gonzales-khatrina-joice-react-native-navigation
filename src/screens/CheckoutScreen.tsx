@@ -42,16 +42,9 @@ const handleGoHome = () => {
   });
 };
 
-
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
-
-        {/* BACK */}
-        <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
-          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
-        </Pressable>
 
         {/* HEADER */}
         <View
@@ -71,7 +64,6 @@ const handleGoHome = () => {
           />
         </View>
 
-        {/* ITEMS */}
         {cart.length === 0 ? (
           <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
         ) : (
@@ -91,7 +83,6 @@ const handleGoHome = () => {
                 <Image
                   source={{ uri: item.image }}
                   style={{ width: 70, height: 70, borderRadius: 8, marginRight: 12 }}
-                  resizeMode="cover"
                 />
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
