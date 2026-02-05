@@ -109,13 +109,11 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               }}
             >
               <Pressable
-                style={[styles.button, { flex: 1, marginRight: 10 }]}
+                style={[styles.button, { marginRight: 10 }]}
                 onPress={() => navigation.navigate("Checkout")}
               >
                 <Text style={styles.buttonText}>Checkout</Text>
               </Pressable>
-
-              <Switch value={dark} onValueChange={toggleTheme} />
             </View>
           </>
         )}
