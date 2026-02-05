@@ -39,9 +39,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
 
         {/* BACK */}
         <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
-          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>
-            ← Back
-          </Text>
+          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
         </Pressable>
 
         {/* HEADER */}
@@ -53,17 +51,18 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
             marginBottom: 20,
           }}
         >
-          <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
-            CHECKOUT
-          </Text>
-          <Switch value={dark} onValueChange={toggleTheme} />
+          <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>CHECKOUT</Text>
+          <Switch
+            value={dark}
+            onValueChange={toggleTheme}
+            trackColor={{ false: "#ccc", true: "#555" }}
+            thumbColor={dark ? "#fff" : "#000"}
+          />
         </View>
 
         {/* ITEMS */}
         {cart.length === 0 ? (
-          <Text style={{ color: dark ? "#fff" : "#000" }}>
-            Your cart is empty.
-          </Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
         ) : (
           <>
             {cart.map((item) => (
@@ -74,36 +73,22 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
                   {
                     flexDirection: "row",
                     alignItems: "center",
+                    backgroundColor: dark ? "#1a1a1a" : "#f2f2f2",
                   },
                 ]}
               >
-                {/* IMAGE */}
                 <Image
                   source={{ uri: item.image }}
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: 8,
-                    marginRight: 12,
-                  }}
+                  style={{ width: 70, height: 70, borderRadius: 8, marginRight: 12 }}
                   resizeMode="cover"
                 />
-
-                {/* DETAILS */}
                 <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      color: dark ? "#fff" : "#000",
-                    }}
-                  >
+                  <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
                     {item.name}
                   </Text>
-
                   <Text style={{ color: dark ? "#fff" : "#000" }}>
                     ₱{item.price} × {item.quantity}
                   </Text>
-
                   <Text style={{ color: dark ? "#fff" : "#000" }}>
                     Subtotal: ₱{item.price * item.quantity}
                   </Text>
@@ -111,20 +96,12 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
               </View>
             ))}
 
-            {/* TOTAL */}
-            <Text
-              style={{
-                fontWeight: "bold",
-                marginTop: 10,
-                color: dark ? "#fff" : "#000",
-              }}
-            >
+            <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
               Total: ₱{total}
             </Text>
 
-            {/* PLACE ORDER */}
             <Pressable
-              style={[styles.button, { marginTop: 10 }]}
+              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#1E90FF" }]}
               onPress={placeOrder}
             >
               <Text style={styles.buttonText}>Place Order</Text>
@@ -134,14 +111,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
 
         {/* SUCCESS MODAL */}
         <Modal transparent visible={modalVisible} animationType="fade">
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "rgba(0,0,0,0.5)",
-            }}
-          >
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
             <View
               style={{
                 width: "80%",
@@ -151,27 +121,14 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
                 alignItems: "center",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 18,
-                  marginBottom: 15,
-                  color: dark ? "#fff" : "#000",
-                }}
-              >
+              <Text style={{ fontSize: 18, marginBottom: 15, color: dark ? "#fff" : "#000" }}>
                 Order Placed!
               </Text>
-
-              <Text
-                style={{
-                  marginBottom: 20,
-                  color: dark ? "#fff" : "#000",
-                }}
-              >
+              <Text style={{ marginBottom: 20, color: dark ? "#fff" : "#000" }}>
                 You have successfully ordered.
               </Text>
-
               <Pressable
-                style={[styles.button, { width: "100%" }]}
+                style={[styles.button, { width: "100%", backgroundColor: dark ? "#444" : "#1E90FF" }]}
                 onPress={handleGoHome}
               >
                 <Text style={styles.buttonText}>Go Back to Home</Text>

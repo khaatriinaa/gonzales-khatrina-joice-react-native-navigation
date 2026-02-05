@@ -24,9 +24,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
 
         {/* BACK */}
         <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
-          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>
-            ← Back
-          </Text>
+          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
         </Pressable>
 
         {/* HEADER */}
@@ -41,14 +39,17 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
           <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
             SHOPPING BAG
           </Text>
-          <Switch value={dark} onValueChange={toggleTheme} />
+          <Switch
+            value={dark}
+            onValueChange={toggleTheme}
+            trackColor={{ false: "#ccc", true: "#555" }}
+            thumbColor={dark ? "#fff" : "#000"}
+          />
         </View>
 
         {/* CONTENT */}
         {cart.length === 0 ? (
-          <Text style={{ color: dark ? "#fff" : "#000" }}>
-            Your cart is empty.
-          </Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
         ) : (
           <>
             <FlatList
@@ -62,10 +63,10 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                     {
                       flexDirection: "row",
                       alignItems: "center",
+                      backgroundColor: dark ? "#1a1a1a" : "#f2f2f2",
                     },
                   ]}
                 >
-                  {/* IMAGE */}
                   <Image
                     source={{ uri: item.image }}
                     style={{
@@ -76,18 +77,10 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                     }}
                     resizeMode="cover"
                   />
-
-                  {/* DETAILS */}
                   <View style={{ flex: 1 }}>
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        color: dark ? "#fff" : "#000",
-                      }}
-                    >
+                    <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
                       {item.name}
                     </Text>
-
                     <Text style={{ color: dark ? "#fff" : "#000" }}>
                       ₱{item.price * item.quantity}
                     </Text>
@@ -97,16 +90,9 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                       <Pressable onPress={() => decrease(item.id)}>
                         <Text style={{ fontSize: 18 }}>➖</Text>
                       </Pressable>
-
-                      <Text
-                        style={{
-                          marginHorizontal: 15,
-                          color: dark ? "#fff" : "#000",
-                        }}
-                      >
+                      <Text style={{ marginHorizontal: 15, color: dark ? "#fff" : "#000" }}>
                         {item.quantity}
                       </Text>
-
                       <Pressable onPress={() => increase(item.id)}>
                         <Text style={{ fontSize: 18 }}>➕</Text>
                       </Pressable>
@@ -116,27 +102,18 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               )}
             />
 
-            {/* TOTAL */}
-            <Text
-              style={{
-                fontWeight: "bold",
-                marginTop: 10,
-                color: dark ? "#fff" : "#000",
-              }}
-            >
+            <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
               Total: ₱{total}
             </Text>
 
-            {/* CHECKOUT */}
             <Pressable
-              style={[styles.button, { marginTop: 10 }]}
+              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#1E90FF" }]}
               onPress={() => navigation.navigate("Checkout")}
             >
               <Text style={styles.buttonText}>Checkout</Text>
             </Pressable>
           </>
         )}
-
       </View>
     </SafeAreaView>
   );

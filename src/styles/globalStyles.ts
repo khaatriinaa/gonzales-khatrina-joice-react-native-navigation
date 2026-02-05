@@ -14,10 +14,14 @@ export const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 10,
     borderRadius: 8,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#f2f2f2", // default light mode
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   button: {
-    backgroundColor: "#000",
+    backgroundColor: "#1E90FF", // light mode button
     padding: 12,
     borderRadius: 8,
     marginTop: 10,

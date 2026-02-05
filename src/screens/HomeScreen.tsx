@@ -40,7 +40,6 @@ const PRODUCTS = [
 const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
   const { addToCart } = useCart();
   const { dark, toggleTheme } = useTheme();
-
   const [search, setSearch] = useState("");
 
   const filteredProducts = PRODUCTS.filter((item) =>
@@ -67,7 +66,12 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
           <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
             HOME
           </Text>
-          <Switch value={dark} onValueChange={toggleTheme} />
+          <Switch
+            value={dark}
+            onValueChange={toggleTheme}
+            trackColor={{ false: "#ccc", true: "#555" }}
+            thumbColor={dark ? "#fff" : "#000"}
+          />
         </View>
 
         {/* SEARCH BAR */}
@@ -78,37 +82,46 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
           onChangeText={setSearch}
           style={{
             borderWidth: 1,
-            borderColor: dark ? "#444" : "#ccc",
+            borderColor: dark ? "#555" : "#ccc",
             borderRadius: 8,
             padding: 10,
             marginBottom: 15,
             color: dark ? "#fff" : "#000",
+            backgroundColor: dark ? "#222" : "#fff",
           }}
         />
 
-        {/* GRID */}
+        {/* PRODUCTS GRID */}
         <FlatList
           data={filteredProducts}
           numColumns={2}
           columnWrapperStyle={{ justifyContent: "space-between" }}
           keyExtractor={(item) => item.id.toString()}
           ListEmptyComponent={
-            <Text style={{ color: dark ? "#fff" : "#000" }}>
-              No items found.
-            </Text>
+            <Text style={{ color: dark ? "#fff" : "#000" }}>No items found.</Text>
           }
           renderItem={({ item }) => (
-            <View style={[styles.card, { width: "48%" }]}>
+            <View
+              style={[
+                styles.card,
+                { width: "48%", backgroundColor: dark ? "#1a1a1a" : "#f2f2f2" },
+              ]}
+            >
               <Image
                 source={{ uri: item.image }}
                 style={{ width: "100%", height: 120, borderRadius: 8 }}
               />
-              <Text style={{ fontWeight: "bold", marginTop: 8 }}>
+              <Text
+                style={{ fontWeight: "bold", marginTop: 8, color: dark ? "#fff" : "#000" }}
+              >
                 {item.name}
               </Text>
-              <Text>₱{item.price}</Text>
+              <Text style={{ color: dark ? "#fff" : "#000" }}>₱{item.price}</Text>
               <Pressable
-                style={styles.button}
+                style={[
+                  styles.button,
+                  { backgroundColor: dark ? "#444" : "#1E90FF" },
+                ]}
                 onPress={() => handleAddToCart(item)}
               >
                 <Text style={styles.buttonText}>Add to Cart</Text>
@@ -119,8 +132,11 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
 
         {/* CART BUTTON */}
         <Pressable
-          style={[styles.button]}
-          onPress={() => navigation.navigate("Cart")} // slide instead of instant tab switch
+          style={[
+            styles.button,
+            { marginTop: 10, backgroundColor: dark ? "#444" : "#1E90FF" },
+          ]}
+          onPress={() => navigation.navigate("Cart")}
         >
           <Text style={styles.buttonText}>Go to Cart</Text>
         </Pressable>
