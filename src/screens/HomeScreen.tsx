@@ -119,12 +119,11 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
 
         {/* CART BUTTON */}
         <Pressable
-          style={[styles.button, { marginTop: 10 }]}
-          onPress={() => navigation.navigate("Cart")}
+          style={[styles.button]}
+          onPress={() => navigation.navigate("Cart")} // slide instead of instant tab switch
         >
           <Text style={styles.buttonText}>Go to Cart</Text>
         </Pressable>
-
       </View>
     </SafeAreaView>
   );

@@ -1,21 +1,18 @@
-// src/navigation/AppNavigator.tsx
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import HomeScreen from "../screens/HomeScreen";
 import CartScreen from "../screens/CartScreen";
 import CheckoutScreen from "../screens/CheckoutScreen";
-import { useCart } from "../contexts/CartContext";
 
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
+// Tabs layout for bottom navigation
 const Tabs = () => {
-  const { count } = useCart();
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -25,7 +22,6 @@ const Tabs = () => {
           if (route.name === "Cart") icon = "cart";
           return <Icon name={icon} size={22} />;
         },
-        tabBarBadge: route.name === "Cart" && count > 0 ? count : undefined,
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -34,17 +30,22 @@ const Tabs = () => {
   );
 };
 
+// Main stack
 export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: "slide_from_right",
+          animation: "slide_from_right", // slide effect for all stack navigations
         }}
       >
-        <Stack.Screen name="Home" component={Tabs} />
+        {/* Tabs for bottom navigation */}
+        <Stack.Screen name="Tabs" component={Tabs} />
+
+        {/* Treat Checkout and Cart as stack screens to slide */}
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
+        <Stack.Screen name="CartStack" component={CartScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
