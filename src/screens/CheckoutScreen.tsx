@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Pressable, Switch, Modal } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Switch,
+  Modal,
+  Image,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useCart } from "../contexts/CartContext";
@@ -27,12 +34,10 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
 
-        {/* BACK BUTTON */}
+        {/* BACK */}
         <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
           <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>
             ← Back
@@ -51,11 +56,10 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
           <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
             CHECKOUT
           </Text>
-
           <Switch value={dark} onValueChange={toggleTheme} />
         </View>
 
-        {/* CART ITEMS */}
+        {/* ITEMS */}
         {cart.length === 0 ? (
           <Text style={{ color: dark ? "#fff" : "#000" }}>
             Your cart is empty.
@@ -63,13 +67,47 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
         ) : (
           <>
             {cart.map((item) => (
-              <View key={item.id} style={styles.card}>
-                <Text style={{ color: dark ? "#fff" : "#000" }}>
-                  {item.name}
-                </Text>
-                <Text style={{ color: dark ? "#fff" : "#000" }}>
-                  ₱{item.price * item.quantity}
-                </Text>
+              <View
+                key={item.id}
+                style={[
+                  styles.card,
+                  {
+                    flexDirection: "row",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                {/* IMAGE */}
+                <Image
+                  source={{ uri: item.image }}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: 8,
+                    marginRight: 12,
+                  }}
+                  resizeMode="cover"
+                />
+
+                {/* DETAILS */}
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      color: dark ? "#fff" : "#000",
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+
+                  <Text style={{ color: dark ? "#fff" : "#000" }}>
+                    ₱{item.price} × {item.quantity}
+                  </Text>
+
+                  <Text style={{ color: dark ? "#fff" : "#000" }}>
+                    Subtotal: ₱{item.price * item.quantity}
+                  </Text>
+                </View>
               </View>
             ))}
 

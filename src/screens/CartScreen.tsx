@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Pressable, FlatList, Switch } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  Switch,
+  Image,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useCart } from "../contexts/CartContext";
@@ -12,19 +19,17 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
   const { dark, toggleTheme } = useTheme();
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
 
-        {/* BACK BUTTON */}
+        {/* BACK */}
         <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
           <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>
             ← Back
           </Text>
         </Pressable>
 
-        {/* HEADER ROW */}
+        {/* HEADER */}
         <View
           style={{
             flexDirection: "row",
@@ -36,7 +41,6 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
           <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
             SHOPPING BAG
           </Text>
-
           <Switch value={dark} onValueChange={toggleTheme} />
         </View>
 
@@ -52,37 +56,61 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
-                <View style={styles.card}>
-                  <Text
+                <View
+                  style={[
+                    styles.card,
+                    {
+                      flexDirection: "row",
+                      alignItems: "center",
+                    },
+                  ]}
+                >
+                  {/* IMAGE */}
+                  <Image
+                    source={{ uri: item.image }}
                     style={{
-                      fontWeight: "bold",
-                      color: dark ? "#fff" : "#000",
+                      width: 80,
+                      height: 80,
+                      borderRadius: 8,
+                      marginRight: 12,
                     }}
-                  >
-                    {item.name}
-                  </Text>
+                    resizeMode="cover"
+                  />
 
-                  <Text style={{ color: dark ? "#fff" : "#000" }}>
-                    ₱{item.price * item.quantity}
-                  </Text>
-
-                  <View style={{ flexDirection: "row", marginTop: 10 }}>
-                    <Pressable onPress={() => decrease(item.id)}>
-                      <Text style={{ fontSize: 18 }}>➖</Text>
-                    </Pressable>
-
+                  {/* DETAILS */}
+                  <View style={{ flex: 1 }}>
                     <Text
                       style={{
-                        marginHorizontal: 15,
+                        fontWeight: "bold",
                         color: dark ? "#fff" : "#000",
                       }}
                     >
-                      {item.quantity}
+                      {item.name}
                     </Text>
 
-                    <Pressable onPress={() => increase(item.id)}>
-                      <Text style={{ fontSize: 18 }}>➕</Text>
-                    </Pressable>
+                    <Text style={{ color: dark ? "#fff" : "#000" }}>
+                      ₱{item.price * item.quantity}
+                    </Text>
+
+                    {/* QUANTITY */}
+                    <View style={{ flexDirection: "row", marginTop: 8 }}>
+                      <Pressable onPress={() => decrease(item.id)}>
+                        <Text style={{ fontSize: 18 }}>➖</Text>
+                      </Pressable>
+
+                      <Text
+                        style={{
+                          marginHorizontal: 15,
+                          color: dark ? "#fff" : "#000",
+                        }}
+                      >
+                        {item.quantity}
+                      </Text>
+
+                      <Pressable onPress={() => increase(item.id)}>
+                        <Text style={{ fontSize: 18 }}>➕</Text>
+                      </Pressable>
+                    </View>
                   </View>
                 </View>
               )}
@@ -99,20 +127,13 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               Total: ₱{total}
             </Text>
 
-            {/* CHECKOUT ROW */}
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 10,
-              }}
+            {/* CHECKOUT */}
+            <Pressable
+              style={[styles.button, { marginTop: 10 }]}
+              onPress={() => navigation.navigate("Checkout")}
             >
-              <Pressable
-                style={[styles.button, { flex: 1 }]}
-                onPress={() => navigation.navigate("Checkout")}
-              >
-                <Text style={styles.buttonText}>Checkout</Text>
-              </Pressable>
-            </View>
+              <Text style={styles.buttonText}>Checkout</Text>
+            </Pressable>
           </>
         )}
 
