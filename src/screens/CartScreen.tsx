@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList, Switch } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useCart } from "../contexts/CartContext";
@@ -9,7 +9,7 @@ import { ScreenProps } from "../navigation/Props";
 
 const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
   const { cart, increase, decrease, total } = useCart();
-  const { dark } = useTheme();
+  const { dark, toggleTheme } = useTheme();
 
   return (
     <SafeAreaView
@@ -17,10 +17,30 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
     >
       <View style={styles.container}>
 
-        <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
-          SHOPPING BAG
-        </Text>
+        {/* BACK BUTTON */}
+        <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>
+            ← Back
+          </Text>
+        </Pressable>
 
+        {/* HEADER ROW */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 20,
+          }}
+        >
+          <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
+            SHOPPING BAG
+          </Text>
+
+          <Switch value={dark} onValueChange={toggleTheme} />
+        </View>
+
+        {/* CONTENT */}
         {cart.length === 0 ? (
           <Text style={{ color: dark ? "#fff" : "#000" }}>
             Your cart is empty.
@@ -30,9 +50,15 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
             <FlatList
               data={cart}
               keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <View style={styles.card}>
-                  <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      color: dark ? "#fff" : "#000",
+                    }}
+                  >
                     {item.name}
                   </Text>
 
@@ -45,7 +71,12 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                       <Text style={{ fontSize: 18 }}>➖</Text>
                     </Pressable>
 
-                    <Text style={{ marginHorizontal: 15, color: dark ? "#fff" : "#000" }}>
+                    <Text
+                      style={{
+                        marginHorizontal: 15,
+                        color: dark ? "#fff" : "#000",
+                      }}
+                    >
                       {item.quantity}
                     </Text>
 
@@ -57,22 +88,37 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               )}
             />
 
-            <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
+            {/* TOTAL */}
+            <Text
+              style={{
+                fontWeight: "bold",
+                marginTop: 10,
+                color: dark ? "#fff" : "#000",
+              }}
+            >
               Total: ₱{total}
             </Text>
 
-            <Pressable
-              style={[styles.button, { marginTop: 10 }]}
-              onPress={() => navigation.navigate("Checkout")}
+            {/* CHECKOUT ROW */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: 10,
+              }}
             >
-              <Text style={styles.buttonText}>Checkout</Text>
-            </Pressable>
+              <Pressable
+                style={[styles.button, { flex: 1, marginRight: 10 }]}
+                onPress={() => navigation.navigate("Checkout")}
+              >
+                <Text style={styles.buttonText}>Checkout</Text>
+              </Pressable>
+
+              <Switch value={dark} onValueChange={toggleTheme} />
+            </View>
           </>
         )}
-
-        <Pressable onPress={() => navigation.goBack()} style={{ marginTop: 10 }}>
-          <Text style={{ color: dark ? "#fff" : "#000" }}>Go Back</Text>
-        </Pressable>
 
       </View>
     </SafeAreaView>

@@ -32,55 +32,110 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
     >
       <View style={styles.container}>
 
-        <Pressable onPress={() => navigation.goBack()}>
-          <Text style={{ color: dark ? "#fff" : "#000", fontSize: 16 }}>
+        {/* BACK BUTTON */}
+        <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>
             ← Back
           </Text>
         </Pressable>
 
-        <View style={{ alignItems: "flex-end", marginVertical: 10 }}>
+        {/* HEADER */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 20,
+          }}
+        >
+          <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
+            CHECKOUT
+          </Text>
+
           <Switch value={dark} onValueChange={toggleTheme} />
         </View>
 
-        <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
-          CHECKOUT
-        </Text>
+        {/* CART ITEMS */}
+        {cart.length === 0 ? (
+          <Text style={{ color: dark ? "#fff" : "#000" }}>
+            Your cart is empty.
+          </Text>
+        ) : (
+          <>
+            {cart.map((item) => (
+              <View key={item.id} style={styles.card}>
+                <Text style={{ color: dark ? "#fff" : "#000" }}>
+                  {item.name}
+                </Text>
+                <Text style={{ color: dark ? "#fff" : "#000" }}>
+                  ₱{item.price * item.quantity}
+                </Text>
+              </View>
+            ))}
 
-        {cart.map(item => (
-          <View key={item.id} style={styles.card}>
-            <Text style={{ color: dark ? "#fff" : "#000" }}>{item.name}</Text>
-            <Text style={{ color: dark ? "#fff" : "#000" }}>
-              ₱{item.price * item.quantity}
+            {/* TOTAL */}
+            <Text
+              style={{
+                fontWeight: "bold",
+                marginTop: 10,
+                color: dark ? "#fff" : "#000",
+              }}
+            >
+              Total: ₱{total}
             </Text>
-          </View>
-        ))}
 
-        <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
-          Total: ₱{total}
-        </Text>
+            {/* PLACE ORDER */}
+            <Pressable
+              style={[styles.button, { marginTop: 10 }]}
+              onPress={placeOrder}
+            >
+              <Text style={styles.buttonText}>Place Order</Text>
+            </Pressable>
+          </>
+        )}
 
-        <Pressable style={[styles.button, { marginTop: 10 }]} onPress={placeOrder}>
-          <Text style={styles.buttonText}>Place Order</Text>
-        </Pressable>
-
+        {/* SUCCESS MODAL */}
         <Modal transparent visible={modalVisible} animationType="fade">
-          <View style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(0,0,0,0.5)"
-          }}>
-            <View style={{
-              width: "80%",
-              padding: 20,
-              borderRadius: 10,
-              backgroundColor: dark ? "#222" : "#fff",
-              alignItems: "center"
-            }}>
-              <Text style={{ fontSize: 18, marginBottom: 15, color: dark ? "#fff" : "#000" }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0,0,0,0.5)",
+            }}
+          >
+            <View
+              style={{
+                width: "80%",
+                padding: 20,
+                borderRadius: 10,
+                backgroundColor: dark ? "#222" : "#fff",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  marginBottom: 15,
+                  color: dark ? "#fff" : "#000",
+                }}
+              >
                 Order Placed!
               </Text>
-              <Pressable style={styles.button} onPress={handleGoHome}>
+
+              <Text
+                style={{
+                  marginBottom: 20,
+                  color: dark ? "#fff" : "#000",
+                }}
+              >
+                You have successfully ordered.
+              </Text>
+
+              <Pressable
+                style={[styles.button, { width: "100%" }]}
+                onPress={handleGoHome}
+              >
                 <Text style={styles.buttonText}>Go Back to Home</Text>
               </Pressable>
             </View>
