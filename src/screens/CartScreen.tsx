@@ -103,13 +103,11 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
                 marginTop: 10,
               }}
             >
               <Pressable
-                style={[styles.button, { marginRight: 10 }]}
+                style={[styles.button, { flex: 1 }]}
                 onPress={() => navigation.navigate("Checkout")}
               >
                 <Text style={styles.buttonText}>Checkout</Text>
