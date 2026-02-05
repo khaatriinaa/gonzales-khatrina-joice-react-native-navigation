@@ -107,7 +107,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
             </Text>
 
             <Pressable
-              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#1E90FF" }]}
+              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#000" }]}
               onPress={() => navigation.navigate("Checkout")}
             >
               <Text style={styles.buttonText}>Checkout</Text>

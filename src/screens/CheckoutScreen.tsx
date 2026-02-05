@@ -101,7 +101,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
             </Text>
 
             <Pressable
-              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#1E90FF" }]}
+              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#000" }]}
               onPress={placeOrder}
             >
               <Text style={styles.buttonText}>Place Order</Text>
@@ -128,7 +128,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
                 You have successfully ordered.
               </Text>
               <Pressable
-                style={[styles.button, { width: "100%", backgroundColor: dark ? "#444" : "#1E90FF" }]}
+                style={[styles.button, { width: "100%", backgroundColor: dark ? "#444" : "#000" }]}
                 onPress={handleGoHome}
               >
                 <Text style={styles.buttonText}>Go Back to Home</Text>

@@ -120,7 +120,7 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
               <Pressable
                 style={[
                   styles.button,
-                  { backgroundColor: dark ? "#444" : "#1E90FF" },
+                  { backgroundColor: dark ? "#444" : "#000" },
                 ]}
                 onPress={() => handleAddToCart(item)}
               >
@@ -134,7 +134,7 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
         <Pressable
           style={[
             styles.button,
-            { marginTop: 10, backgroundColor: dark ? "#444" : "#1E90FF" },
+            { marginTop: 10, backgroundColor: dark ? "#444" : "#000" },
           ]}
           onPress={() => navigation.navigate("Cart")}
         >
