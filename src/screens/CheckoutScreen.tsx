@@ -6,6 +6,7 @@ import {
   Switch,
   Modal,
   Image,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -44,13 +45,15 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
-      <View style={styles.container}>
-
-        {/* BACK — SAME PATTERN AS CART */}
+      <ScrollView
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        keyboardShouldPersistTaps="handled"
+      >
         {/* BACK */}
         <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
           <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
         </Pressable>
+
         {/* HEADER */}
         <View
           style={{
@@ -73,9 +76,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
 
         {/* ITEMS */}
         {cart.length === 0 ? (
-          <Text style={{ color: dark ? "#fff" : "#000" }}>
-            Your cart is empty.
-          </Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
         ) : (
           <>
             {cart.map((item) => (
@@ -87,6 +88,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
                     flexDirection: "row",
                     alignItems: "center",
                     backgroundColor: dark ? "#1a1a1a" : "#f2f2f2",
+                    marginBottom: 10,
                   },
                 ]}
               >
@@ -101,9 +103,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
                   resizeMode="cover"
                 />
                 <View style={{ flex: 1 }}>
-                  <Text
-                    style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}
-                  >
+                  <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
                     {item.name}
                   </Text>
                   <Text style={{ color: dark ? "#fff" : "#000" }}>
@@ -120,6 +120,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
               style={{
                 fontWeight: "bold",
                 marginTop: 10,
+                fontSize: 16,
                 color: dark ? "#fff" : "#000",
               }}
             >
@@ -175,10 +176,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
                 You have successfully ordered.
               </Text>
               <Pressable
-                style={[
-                  styles.button,
-                  { width: "100%", backgroundColor: dark ? "#444" : "#000" },
-                ]}
+                style={[styles.button, { width: "100%", backgroundColor: dark ? "#444" : "#000" }]}
                 onPress={handleGoHome}
               >
                 <Text style={styles.buttonText}>Go Back to Home</Text>
@@ -186,8 +184,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
             </View>
           </View>
         </Modal>
-
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
