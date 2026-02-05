@@ -24,28 +24,33 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
     setModalVisible(true);
   };
 
-const handleGoHome = () => {
-  setModalVisible(false);
-  clearCart();
+  const handleGoHome = () => {
+    setModalVisible(false);
+    clearCart();
 
-  navigation.reset({
-    index: 0,
-    routes: [
-      {
-        name: "MainTabs",  // Top-level navigator
-        state: {
-          index: 0, // Home tab is the first tab
-          routes: [{ name: "Home" }], // The tab inside MainTabs
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "MainTabs",
+          state: {
+            index: 0,
+            routes: [{ name: "Home" }],
+          },
         },
-      },
-    ],
-  });
-};
+      ],
+    });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
 
+        {/* BACK — SAME PATTERN AS CART */}
+        {/* BACK */}
+        <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
+        </Pressable>
         {/* HEADER */}
         <View
           style={{
@@ -55,7 +60,9 @@ const handleGoHome = () => {
             marginBottom: 20,
           }}
         >
-          <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>CHECKOUT</Text>
+          <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
+            CHECKOUT
+          </Text>
           <Switch
             value={dark}
             onValueChange={toggleTheme}
@@ -64,8 +71,11 @@ const handleGoHome = () => {
           />
         </View>
 
+        {/* ITEMS */}
         {cart.length === 0 ? (
-          <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>
+            Your cart is empty.
+          </Text>
         ) : (
           <>
             {cart.map((item) => (
@@ -82,10 +92,18 @@ const handleGoHome = () => {
               >
                 <Image
                   source={{ uri: item.image }}
-                  style={{ width: 70, height: 70, borderRadius: 8, marginRight: 12 }}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: 8,
+                    marginRight: 12,
+                  }}
+                  resizeMode="cover"
                 />
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
+                  <Text
+                    style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}
+                  >
                     {item.name}
                   </Text>
                   <Text style={{ color: dark ? "#fff" : "#000" }}>
@@ -98,12 +116,21 @@ const handleGoHome = () => {
               </View>
             ))}
 
-            <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                marginTop: 10,
+                color: dark ? "#fff" : "#000",
+              }}
+            >
               Total: ₱{total}
             </Text>
 
             <Pressable
-              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#000" }]}
+              style={[
+                styles.button,
+                { marginTop: 10, backgroundColor: dark ? "#444" : "#000" },
+              ]}
               onPress={placeOrder}
             >
               <Text style={styles.buttonText}>Place Order</Text>
@@ -113,7 +140,14 @@ const handleGoHome = () => {
 
         {/* SUCCESS MODAL */}
         <Modal transparent visible={modalVisible} animationType="fade">
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0,0,0,0.5)",
+            }}
+          >
             <View
               style={{
                 width: "80%",
@@ -123,14 +157,28 @@ const handleGoHome = () => {
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: 18, marginBottom: 15, color: dark ? "#fff" : "#000" }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  marginBottom: 15,
+                  color: dark ? "#fff" : "#000",
+                }}
+              >
                 Order Placed!
               </Text>
-              <Text style={{ marginBottom: 20, color: dark ? "#fff" : "#000" }}>
+              <Text
+                style={{
+                  marginBottom: 20,
+                  color: dark ? "#fff" : "#000",
+                }}
+              >
                 You have successfully ordered.
               </Text>
               <Pressable
-                style={[styles.button, { width: "100%", backgroundColor: dark ? "#444" : "#000" }]}
+                style={[
+                  styles.button,
+                  { width: "100%", backgroundColor: dark ? "#444" : "#000" },
+                ]}
                 onPress={handleGoHome}
               >
                 <Text style={styles.buttonText}>Go Back to Home</Text>
