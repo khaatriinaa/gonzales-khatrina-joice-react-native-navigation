@@ -1,51 +1,57 @@
-// src/navigation/AppNavigator.tsx
+// AppNavigator.tsx
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/Ionicons";
-
 import HomeScreen from "../screens/HomeScreen";
 import CartScreen from "../screens/CartScreen";
 import CheckoutScreen from "../screens/CheckoutScreen";
-import { useCart } from "../contexts/CartContext";
+import { useTheme } from "../contexts/ThemeContext";
+import Icon from "react-native-vector-icons/Ionicons";
 
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-const Tabs = () => {
-  const { count } = useCart();
+const AppNavigator = () => {
+  const { dark } = useTheme();
 
-  return (
+  const TabScreens = () => (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={{
         headerShown: false,
-        tabBarIcon: ({ focused }) => {
-          let icon = "home";
-          if (route.name === "Cart") icon = "cart";
-          return <Icon name={icon} size={22} />;
+        tabBarActiveTintColor: dark ? "#fff" : "#1E90FF",
+        tabBarInactiveTintColor: dark ? "#aaa" : "#555",
+        tabBarStyle: {
+          backgroundColor: dark ? "#121212" : "#fff",
+          borderTopColor: dark ? "#222" : "#ccc",
         },
-        tabBarBadge: route.name === "Cart" && count > 0 ? count : undefined,
-      })}
+      }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Cart" component={CartScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Icon name="cart" size={size} color={color} />,
+        }}
+      />
     </Tab.Navigator>
   );
-};
 
-export default function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          animation: "slide_from_right",
-        }}
-      >
-        <Stack.Screen name="Home" component={Tabs} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="MainTabs" component={TabScreens} />
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default AppNavigator;
