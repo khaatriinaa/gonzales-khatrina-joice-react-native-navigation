@@ -1,25 +1,29 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { enableScreens } from "react-native-screens";
+
 import HomeScreen from "../screens/HomeScreen";
 import CartScreen from "../screens/CartScreen";
 import CheckoutScreen from "../screens/CheckoutScreen";
 import { useTheme } from "../contexts/ThemeContext";
 import { useCart } from "../contexts/CartContext";
-import Icon from "react-native-vector-icons/Ionicons";
+
+enableScreens(true);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const AppNavigator = () => {
+const MainTabs = () => {
   const { dark } = useTheme();
   const { cart } = useCart();
 
-  const TabScreens = () => (
+  return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        freezeOnBlur: true,
         tabBarActiveTintColor: dark ? "#fff" : "#1E90FF",
         tabBarInactiveTintColor: dark ? "#aaa" : "#555",
         tabBarStyle: {
@@ -32,14 +36,18 @@ const AppNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Cart"
         component={CartScreen}
         options={{
-          tabBarIcon: ({ color, size }) => <Icon name="cart" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="cart" size={size} color={color} />
+          ),
           tabBarBadge: cart.length > 0 ? cart.length : undefined,
           tabBarBadgeStyle: {
             backgroundColor: "#FF3B30",
@@ -49,14 +57,14 @@ const AppNavigator = () => {
       />
     </Tab.Navigator>
   );
+};
 
+const AppNavigator = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="MainTabs" component={TabScreens} />
-        <Stack.Screen name="Checkout" component={CheckoutScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainTabs" component={MainTabs} />
+      <Stack.Screen name="Checkout" component={CheckoutScreen} />
+    </Stack.Navigator>
   );
 };
 
