@@ -53,9 +53,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* Main Tabs */}
         <Stack.Screen name="MainTabs" component={TabScreens} />
-        {/* Checkout Screen above tabs for smooth transition */}
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
