@@ -13,7 +13,6 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
 
   return (
     <SafeAreaView
-      edges={["bottom", "left", "right"]}
       style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}
     >
       <View style={styles.container}>
@@ -31,7 +30,6 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
             <FlatList
               data={cart}
               keyExtractor={(item) => item.id.toString()}
-              style={{ flex: 1 }}
               renderItem={({ item }) => (
                 <View style={styles.card}>
                   <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
@@ -59,13 +57,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               )}
             />
 
-            <Text
-              style={{
-                fontWeight: "bold",
-                marginTop: 10,
-                color: dark ? "#fff" : "#000",
-              }}
-            >
+            <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
               Total: ₱{total}
             </Text>
 
@@ -79,9 +71,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
         )}
 
         <Pressable onPress={() => navigation.goBack()} style={{ marginTop: 10 }}>
-          <Text style={{ color: dark ? "#fff" : "#000" }}>
-            Go Back
-          </Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>Go Back</Text>
         </Pressable>
 
       </View>

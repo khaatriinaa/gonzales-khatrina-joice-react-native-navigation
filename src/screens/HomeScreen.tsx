@@ -7,14 +7,13 @@ import {
   Switch,
   Alert,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ScreenProps } from "../navigation/Props";
 import { useCart } from "../contexts/CartContext";
 import { useTheme } from "../contexts/ThemeContext";
 import { styles } from "../styles/globalStyles";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-/** Dummy products */
 const PRODUCTS = [
   { id: 1, name: "Brooklyn Graphic Tee", price: 499 },
   { id: 2, name: "Winner Oversized Shirt", price: 729 },
@@ -32,7 +31,6 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
 
   return (
     <SafeAreaView
-      edges={["bottom", "left", "right"]}
       style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}
     >
       <View style={styles.container}>
@@ -41,15 +39,14 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
             justifyContent: "space-between",
+            alignItems: "center",
             marginBottom: 20,
           }}
         >
           <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
             HOME
           </Text>
-
           <Switch value={dark} onValueChange={toggleTheme} />
         </View>
 
@@ -58,17 +55,14 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
           data={PRODUCTS}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          style={{ flex: 1 }}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>
                 {item.name}
               </Text>
-
               <Text style={{ marginVertical: 6 }}>
                 ₱{item.price}
               </Text>
-
               <Pressable
                 style={styles.button}
                 onPress={() => handleAddToCart(item)}
@@ -79,7 +73,6 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
           )}
         />
 
-        {/* QUICK CART ACCESS */}
         <Pressable
           style={[styles.button, { marginTop: 10 }]}
           onPress={() => navigation.navigate("Cart")}
