@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     elevation: 2,
   },
   button: {
-    backgroundColor: "#1E90FF", // light mode button
+    backgroundColor: "#000", // light mode button
     padding: 12,
     borderRadius: 8,
     marginTop: 10,
