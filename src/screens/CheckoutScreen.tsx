@@ -24,14 +24,25 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
     setModalVisible(true);
   };
 
-  const handleGoHome = () => {
-    setModalVisible(false);
-    clearCart();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Home" }],
-    });
-  };
+const handleGoHome = () => {
+  setModalVisible(false);
+  clearCart();
+
+  navigation.reset({
+    index: 0,
+    routes: [
+      {
+        name: "MainTabs",  // Top-level navigator
+        state: {
+          index: 0, // Home tab is the first tab
+          routes: [{ name: "Home" }], // The tab inside MainTabs
+        },
+      },
+    ],
+  });
+};
+
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
