@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  Switch,
-  Modal,
-  Image,
-} from "react-native";
+import { View, Text, Pressable, Switch, Modal, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useCart } from "../contexts/CartContext";
@@ -36,12 +29,9 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
-
-        {/* BACK */}
+        {/* BACK BUTTON */}
         <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
-          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>
-            ← Back
-          </Text>
+          <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
         </Pressable>
 
         {/* HEADER */}
@@ -59,74 +49,29 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
           <Switch value={dark} onValueChange={toggleTheme} />
         </View>
 
-        {/* ITEMS */}
+        {/* CART ITEMS */}
         {cart.length === 0 ? (
-          <Text style={{ color: dark ? "#fff" : "#000" }}>
-            Your cart is empty.
-          </Text>
+          <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
         ) : (
           <>
             {cart.map((item) => (
-              <View
-                key={item.id}
-                style={[
-                  styles.card,
-                  {
-                    flexDirection: "row",
-                    alignItems: "center",
-                  },
-                ]}
-              >
-                {/* IMAGE */}
+              <View key={item.id} style={styles.card}>
                 <Image
                   source={{ uri: item.image }}
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: 8,
-                    marginRight: 12,
-                  }}
-                  resizeMode="cover"
+                  style={{ width: "100%", height: 120, borderRadius: 8 }}
                 />
-
-                {/* DETAILS */}
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      color: dark ? "#fff" : "#000",
-                    }}
-                  >
-                    {item.name}
-                  </Text>
-
-                  <Text style={{ color: dark ? "#fff" : "#000" }}>
-                    ₱{item.price} × {item.quantity}
-                  </Text>
-
-                  <Text style={{ color: dark ? "#fff" : "#000" }}>
-                    Subtotal: ₱{item.price * item.quantity}
-                  </Text>
-                </View>
+                <Text style={{ color: dark ? "#fff" : "#000" }}>{item.name}</Text>
+                <Text style={{ color: dark ? "#fff" : "#000" }}>
+                  ₱{item.price * item.quantity}
+                </Text>
               </View>
             ))}
 
-            {/* TOTAL */}
-            <Text
-              style={{
-                fontWeight: "bold",
-                marginTop: 10,
-                color: dark ? "#fff" : "#000",
-              }}
-            >
+            <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
               Total: ₱{total}
             </Text>
 
-            {/* PLACE ORDER */}
-            <Pressable
-              style={[styles.button, { marginTop: 10 }]}
-              onPress={placeOrder}
-            >
+            <Pressable style={[styles.button, { marginTop: 10 }]} onPress={placeOrder}>
               <Text style={styles.buttonText}>Place Order</Text>
             </Pressable>
           </>
@@ -151,35 +96,19 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
                 alignItems: "center",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 18,
-                  marginBottom: 15,
-                  color: dark ? "#fff" : "#000",
-                }}
-              >
+              <Text style={{ fontSize: 18, marginBottom: 15, color: dark ? "#fff" : "#000" }}>
                 Order Placed!
               </Text>
-
-              <Text
-                style={{
-                  marginBottom: 20,
-                  color: dark ? "#fff" : "#000",
-                }}
-              >
+              <Text style={{ marginBottom: 20, color: dark ? "#fff" : "#000" }}>
                 You have successfully ordered.
               </Text>
 
-              <Pressable
-                style={[styles.button, { width: "100%" }]}
-                onPress={handleGoHome}
-              >
+              <Pressable style={[styles.button, { width: "100%" }]} onPress={handleGoHome}>
                 <Text style={styles.buttonText}>Go Back to Home</Text>
               </Pressable>
             </View>
           </View>
         </Modal>
-
       </View>
     </SafeAreaView>
   );
