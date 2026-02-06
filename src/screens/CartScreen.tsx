@@ -6,6 +6,7 @@ import {
   FlatList,
   Switch,
   Image,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCart } from "../contexts/CartContext";
@@ -14,44 +15,69 @@ import { styles } from "../styles/globalStyles";
 import { ScreenProps } from "../navigation/Props";
 
 // Memoized Cart Item
-const CartItem = React.memo(({ item, increase, decrease, dark }: any) => (
-  <View
-    style={[
-      styles.card,
-      {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: dark ? "#1a1a1a" : "#f2f2f2",
-      },
-    ]}
-  >
-    <Image
-      source={{ uri: item.image }}
-      style={{ width: 80, height: 80, borderRadius: 8, marginRight: 12 }}
-      resizeMode="cover"
-    />
-    <View style={{ flex: 1 }}>
-      <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
-        {item.name}
-      </Text>
-      <Text style={{ color: dark ? "#fff" : "#000" }}>
-        ₱{item.price * item.quantity}
-      </Text>
+const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
+  const handleDecrease = () => {
+    if (item.quantity === 1) {
+      Alert.alert(
+        "Remove Item",
+        `Are you sure you want to remove "${item.name}" from your cart?`,
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Remove",
+            style: "destructive",
+            onPress: () => decrease(item.id),
+          },
+        ],
+        { cancelable: true }
+      );
+    } else {
+      decrease(item.id);
+    }
+  };
 
-      <View style={{ flexDirection: "row", marginTop: 8 }}>
-        <Pressable onPress={() => decrease(item.id)}>
-          <Text style={{ fontSize: 18 }}>➖</Text>
-        </Pressable>
-        <Text style={{ marginHorizontal: 15, color: dark ? "#fff" : "#000" }}>
-          {item.quantity}
+  return (
+    <View
+      style={[
+        styles.card,
+        {
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: dark ? "#1a1a1a" : "#f2f2f2",
+        },
+      ]}
+    >
+      <Image
+        source={{ uri: item.image }}
+        style={{ width: 80, height: 80, borderRadius: 8, marginRight: 12 }}
+        resizeMode="cover"
+      />
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
+          {item.name}
         </Text>
-        <Pressable onPress={() => increase(item.id)}>
-          <Text style={{ fontSize: 18 }}>➕</Text>
-        </Pressable>
+        <Text style={{ color: dark ? "#fff" : "#000" }}>
+          ₱{item.price * item.quantity}
+        </Text>
+
+        <View style={{ flexDirection: "row", marginTop: 8 }}>
+          <Pressable onPress={handleDecrease}>
+            <Text style={{ fontSize: 18 }}>➖</Text>
+          </Pressable>
+          <Text style={{ marginHorizontal: 15, color: dark ? "#fff" : "#000" }}>
+            {item.quantity}
+          </Text>
+          <Pressable onPress={() => increase(item.id)}>
+            <Text style={{ fontSize: 18 }}>➕</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
-  </View>
-));
+  );
+});
 
 const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
   const { cart, increase, decrease, total } = useCart();
