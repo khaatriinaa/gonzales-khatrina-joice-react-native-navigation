@@ -57,45 +57,42 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       {/* TOP SPACE WITH BACK, TITLE, TOGGLE */}
       <View
-        style={{
-          height: 80,
-          flexDirection: "row",
-          alignItems: "center",
-          paddingHorizontal: 16,
-          borderBottomWidth: 1,
-          borderColor: dark ? "#333" : "#ddd",
-        }}
-      >
-        {/* Back Button */}
-        <Pressable onPress={() => navigation.goBack()} style={{ zIndex: 1 }}>
-          <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
-        </Pressable>
+  style={{
+    height: 80,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderColor: dark ? "#333" : "#ddd",
+  }}
+>
+  {/* Back Button on the left */}
+  <Pressable onPress={() => navigation.goBack()} style={{ zIndex: 1 }}>
+    <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
+  </Pressable>
 
-        {/* Title */}
-        <Text
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            fontSize: 20,
-            fontWeight: "bold",
-            color: dark ? "#fff" : "#000",
-          }}
-        >
-          SHOPPING BAG
-        </Text>
+  {/* Title centered */}
+  <Text
+    style={{
+      flex: 1,
+      textAlign: "center",
+      fontSize: 20,
+      fontWeight: "bold",
+      color: dark ? "#fff" : "#000",
+    }}
+  >
+    SHOPPING BAG {/* Or CHECKOUT */}
+  </Text>
 
-        {/* Toggle Switch (right side) */}
-        <View style={{ zIndex: 1 }}>
-          <Switch
-            value={dark}
-            onValueChange={toggleTheme}
-            trackColor={{ false: "#ccc", true: "#555" }}
-            thumbColor={dark ? "#fff" : "#000"}
-          />
-        </View>
-      </View>
+  {/* Toggle Switch on the right */}
+  <Switch
+    value={dark}
+    onValueChange={toggleTheme}
+    trackColor={{ false: "#ccc", true: "#555" }}
+    thumbColor={dark ? "#fff" : "#000"}
+  />
+</View>
+
 
       {/* CONTENT */}
       {cart.length === 0 ? (
