@@ -73,7 +73,6 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              height: 44, // fixed height for vertical alignment
             }}
           >
             <Text
