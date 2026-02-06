@@ -14,7 +14,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { styles } from "../styles/globalStyles";
 import { ScreenProps } from "../navigation/Props";
 
-// Memoized Cart Item
+// Memoized Cart Item (unchanged)
 const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
   const handleDecrease = () => {
     if (item.quantity === 1) {
@@ -109,7 +109,41 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
         </View>
 
         {cart.length === 0 ? (
-          <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 40,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                color: dark ? "#aaa" : "#666",
+                marginBottom: 20,
+                textAlign: "center",
+              }}
+            >
+              Your cart is empty.
+            </Text>
+
+            <Pressable
+              style={[
+                styles.button,
+                {
+                  backgroundColor: dark ? "#444" : "#000",
+                  paddingVertical: 14,
+                  paddingHorizontal: 32,
+                },
+              ]}
+              onPress={() => navigation.navigate("Home")} // or wherever your product list is (e.g. Home tab)
+            >
+              <Text style={[styles.buttonText, { fontSize: 16 }]}>
+                Browse Items
+              </Text>
+            </Pressable>
+          </View>
         ) : (
           <>
             <FlatList
