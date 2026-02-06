@@ -68,7 +68,7 @@ const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
           <Pressable 
             onPress={handleDecrease}
-            hitSlop={12} // makes touch area larger without visual change
+            hitSlop={12} 
           >
             <Icon 
               name="remove-circle-outline" 
@@ -84,7 +84,7 @@ const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
               fontSize: 16, 
               fontWeight: "600",
               color: dark ? "#fff" : "#000",
-              marginHorizontal: 12,
+              marginHorizontal: 3,
             }}
           >
             {item.quantity}

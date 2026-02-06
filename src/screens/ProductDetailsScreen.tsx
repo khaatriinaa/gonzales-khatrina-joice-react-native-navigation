@@ -22,6 +22,10 @@ const ProductDetailsScreen: React.FC<
   const { cart, addToCart } = useCart();
   const { dark, toggleTheme } = useTheme();
 
+const cartItem = cart.find(c => c.id === product.id);
+const cartQty = cartItem?.quantity ?? 0;
+const isOutOfStock = product.stock === 0 || cartQty >= product.stock;
+
   const handleAddToCart = () => {
     addToCart(product);
     Alert.alert("Added to Cart 🛒", product.name);

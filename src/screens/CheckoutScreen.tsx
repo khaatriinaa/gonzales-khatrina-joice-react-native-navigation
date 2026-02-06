@@ -7,6 +7,7 @@ import {
   Modal,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -14,6 +15,7 @@ import { useCart } from "../contexts/CartContext";
 import { useTheme } from "../contexts/ThemeContext";
 import { styles } from "../styles/globalStyles";
 import { ScreenProps } from "../navigation/Props";
+import { PRODUCTS } from "../data/products";
 
 const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
   const { cart, total, clearCart } = useCart();
@@ -22,12 +24,20 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
 
   const placeOrder = () => {
     if (cart.length === 0) return;
+
+    cart.forEach((cartItem) => {
+      const product = PRODUCTS.find((p) => p.id === cartItem.id);
+      if (product) {
+        // Prevent negative stock
+        product.stock = Math.max(0, product.stock - cartItem.quantity);
+      }
+    });
     setModalVisible(true);
   };
 
   const handleGoHome = () => {
     setModalVisible(false);
-    clearCart();
+    clearCart();  
 
     navigation.reset({
       index: 0,
@@ -190,7 +200,7 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
           </View>
         )}
 
-        {/* SUCCESS MODAL */}
+       {/* SUCCESS MODAL */}
         <Modal transparent visible={modalVisible} animationType="fade">
           <View
             style={{
