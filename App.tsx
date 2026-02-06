@@ -2,7 +2,6 @@ import React from "react";
 import AppNavigator from "./src/navigation/AppNavigator";
 import { CartProvider } from "./src/contexts/CartContext";
 import { ThemeProvider } from "./src/contexts/ThemeContext";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {

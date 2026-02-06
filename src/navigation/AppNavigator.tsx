@@ -48,6 +48,7 @@ const MainTabs = () => {
           backgroundColor: dark ? "#121212" : "#fff",
           borderTopColor: dark ? "#222" : "#ccc",
         },
+        animation: 'none',
       }}
     >
       <Tab.Screen
