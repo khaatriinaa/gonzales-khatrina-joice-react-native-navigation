@@ -19,7 +19,7 @@ const ProductDetailsScreen: React.FC<
   ScreenProps<"ProductDetails"> & { route: any }
 > = ({ route, navigation }) => {
   const { product } = route.params;
-  const { addToCart } = useCart();
+  const { cart, addToCart } = useCart();
   const { dark, toggleTheme } = useTheme();
 
   const handleAddToCart = () => {
@@ -112,11 +112,25 @@ const ProductDetailsScreen: React.FC<
           <Pressable
             style={[
               styles.button,
-              { backgroundColor: dark ? "#444" : "#000" },
+              {
+                backgroundColor:
+                  product.stock === 0
+                    ? "#999"
+                    : dark
+                    ? "#444"
+                    : "#000",
+              },
             ]}
             onPress={handleAddToCart}
+            disabled={product.stock === 0 || (cart.find(c => c.id === product.id)?.quantity ?? 0) >= product.stock}
           >
-            <Text style={styles.buttonText}>Add to Cart</Text>
+            <Text style={styles.buttonText}>
+              {product.stock === 0
+                ? "Out of Stock"
+                : cart.find((c) => c.id === product.id)
+                ? `Add to Cart (${cart.find((c) => c.id === product.id)?.quantity})`
+                : "Add to Cart"}
+            </Text>
           </Pressable>
         </View>
       </View>

@@ -7,6 +7,7 @@ export interface CartItem {
   price: number;
   image: string;
   quantity: number;
+  stock: number;
 }
 
 /** Context contract */
@@ -33,11 +34,23 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart(prev => {
       const existing = prev.find(p => p.id === item.id);
       if (existing) {
-        return prev.map(p =>
-          p.id === item.id ? { ...p, quantity: p.quantity + 1 } : p
-        );
+        // Only increase if it does not exceed stock
+        if (existing.quantity < item.stock) {
+          return prev.map(p =>
+            p.id === item.id ? { ...p, quantity: p.quantity + 1 } : p
+          );
+        } else {
+          alert("No more stock available!");
+          return prev;
+        }
       }
-      return [...prev, { ...item, quantity: 1 }];
+      // Add new item only if stock > 0
+      if (item.stock > 0) {
+        return [...prev, { ...item, quantity: 1 }];
+      } else {
+        alert("Product is out of stock!");
+        return prev;
+      }
     });
   };
 
@@ -45,7 +58,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const increase = (id: number) => {
     setCart(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === id && item.quantity < item.stock
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       )
     );
   };
