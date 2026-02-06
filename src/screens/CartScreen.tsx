@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { View, Text, FlatList, Pressable, Image, Alert, Switch } from "react-native";
+import { View, Text, Pressable, FlatList, Switch, Image, Alert, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCart } from "../contexts/CartContext";
 import { useTheme } from "../contexts/ThemeContext";
@@ -7,84 +7,129 @@ import { styles } from "../styles/globalStyles";
 import { ScreenProps } from "../navigation/Props";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
-  const { cart, increase, decrease, total } = useCart();
-  const { dark, toggleTheme } = useTheme();
-  const totalAmount = useMemo(() => total, [total]);
-
-  const handleDecrease = (item: any) => {
+// Memoized Cart Item
+const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
+  const handleDecrease = () => {
     if (item.quantity === 1) {
       Alert.alert(
         "Remove Item",
-        `Remove "${item.name}" from cart?`,
+        `Are you sure you want to remove "${item.name}" from your cart?`,
         [
-          { text: "Cancel", style: "cancel" },
-          { text: "Remove", style: "destructive", onPress: () => decrease(item.id) },
-        ]
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Remove",
+            style: "destructive",
+            onPress: () => decrease(item.id),
+          },
+        ],
+        { cancelable: true }
       );
     } else {
       decrease(item.id);
     }
   };
 
-  const renderItem = ({ item }: any) => (
+  return (
     <View
       style={[
         styles.card,
-        { flexDirection: "row", alignItems: "center", backgroundColor: dark ? "#1a1a1a" : "#f2f2f2", marginBottom: 10 },
+        {
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: dark ? "#1a1a1a" : "#f2f2f2",
+        },
       ]}
     >
-      <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 8, marginRight: 12 }} />
+      <Image
+        source={{ uri: item.image }}
+        style={{ width: 80, height: 80, borderRadius: 8, marginRight: 12 }}
+        resizeMode="cover"
+      />
       <View style={{ flex: 1 }}>
-        <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>{item.name}</Text>
-        <Text style={{ color: dark ? "#fff" : "#000" }}>₱{item.price * item.quantity}</Text>
+        <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
+          {item.name}
+        </Text>
+        <Text style={{ color: dark ? "#fff" : "#000" }}>
+          ₱{item.price * item.quantity}
+        </Text>
+
+        {/* Quantity stepper – no border */}
         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
-          <Pressable onPress={() => handleDecrease(item)}>
-            <Icon name="remove-circle-outline" size={24} color={dark ? "#aaa" : "#666"} />
+          <Pressable 
+            onPress={handleDecrease}
+            hitSlop={12} 
+          >
+            <Icon 
+              name="remove-circle-outline" 
+              size={24} 
+              color={dark ? "#aaa" : "#666"} 
+            />
           </Pressable>
-          <Text style={{ width: 40, textAlign: "center", fontSize: 16, color: dark ? "#fff" : "#000", marginHorizontal: 3 }}>
+
+          <Text 
+            style={{ 
+              width: 40, 
+              textAlign: "center", 
+              fontSize: 16, 
+              fontWeight: "600",
+              color: dark ? "#fff" : "#000",
+              marginHorizontal: 3,
+            }}
+          >
             {item.quantity}
           </Text>
-          <Pressable onPress={() => increase(item.id)}>
-            <Icon name="add-circle-outline" size={24} color={dark ? "#aaa" : "#666"} />
+
+          <Pressable 
+            onPress={() => increase(item.id)}
+            hitSlop={12}
+          >
+            <Icon 
+              name="add-circle-outline" 
+              size={24} 
+              color={dark ? "#aaa" : "#666"} 
+            />
           </Pressable>
         </View>
       </View>
     </View>
   );
+});
+
+const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
+  const { cart, increase, decrease, total } = useCart();
+  const { dark, toggleTheme } = useTheme();
+
+  // Memoize total calculation to prevent re-render
+  const totalAmount = useMemo(() => total, [total]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
-      {/* TOP SPACE WITH BACK, TITLE, TOGGLE */}
-      <View
+      <View style={styles.container}>
+
+
+        {/* HEADER */}
+<View
   style={{
-    height: 80,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderColor: dark ? "#333" : "#ddd",
+    justifyContent: "space-between",
+    marginBottom: 20,
   }}
 >
-  {/* Back Button on the left */}
-  <Pressable onPress={() => navigation.goBack()} style={{ zIndex: 1 }}>
-    <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
-  </Pressable>
+  {/* Back button + title */}
+  <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <Pressable onPress={() => navigation.goBack()} style={{ marginRight: 10 }}>
+      <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
+    </Pressable>
+    <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
+      SHOPPING BAG
+    </Text>
+  </View>
 
-  {/* Title centered */}
-  <Text
-    style={{
-      flex: 1,
-      textAlign: "center",
-      fontSize: 20,
-      fontWeight: "bold",
-      color: dark ? "#fff" : "#000",
-    }}
-  >
-    SHOPPING BAG {/* Or CHECKOUT */}
-  </Text>
-
-  {/* Toggle Switch on the right */}
+  {/* Theme toggle */}
   <Switch
     value={dark}
     onValueChange={toggleTheme}
@@ -94,43 +139,66 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
 </View>
 
 
-      {/* CONTENT */}
-      {cart.length === 0 ? (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 20 }}>
-          <Text style={{ fontSize: 18, color: dark ? "#aaa" : "#666", marginBottom: 10 }}>Your cart is empty.</Text>
-          <Pressable onPress={() => navigation.navigate("Home")} style={{ padding: 12, backgroundColor: dark ? "#444" : "#000", borderRadius: 8 }}>
-            <Text style={{ color: "#fff", textAlign: "center" }}>Browse Items</Text>
-          </Pressable>
-        </View>
-      ) : (
-        <FlatList
-          contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
-          data={cart}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-        />
-      )}
+        {cart.length === 0 ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 40,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                color: dark ? "#aaa" : "#666",
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              Your cart is empty.
+            </Text>
 
-      {/* FIXED FOOTER */}
-      {cart.length > 0 && (
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: 16,
-            borderTopWidth: 1,
-            borderColor: dark ? "#333" : "#ddd",
-            backgroundColor: dark ? "#000" : "#fff",
-          }}
-        >
-          <Text style={{ fontWeight: "bold", marginBottom: 10, color: dark ? "#fff" : "#000" }}>Total: ₱{totalAmount}</Text>
-          <Pressable onPress={() => navigation.navigate("Checkout")} style={{ padding: 12, backgroundColor: dark ? "#444" : "#000", borderRadius: 8 }}>
-            <Text style={{ color: "#fff", textAlign: "center" }}>Checkout</Text>
-          </Pressable>
-        </View>
-      )}
+            <Pressable
+              style={[
+                styles.button,
+                {
+                  backgroundColor: dark ? "#444" : "#000",
+                  paddingVertical: 13,
+                  paddingHorizontal: 40,
+                },
+              ]}
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Text style={[styles.buttonText, { fontSize: 16 }]}>
+                Browse Items
+              </Text>
+            </Pressable>
+          </View>
+        ) : (
+          <>
+            <FlatList
+              data={cart}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <CartItem item={item} increase={increase} decrease={decrease} dark={dark} />
+              )}
+            />
+
+            <Text style={{ fontWeight: "bold", marginTop: 10, color: dark ? "#fff" : "#000" }}>
+              Total: ₱{totalAmount}
+            </Text>
+
+            <Pressable
+              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#000" }]}
+              onPress={() => navigation.navigate("Checkout")}
+            >
+              <Text style={styles.buttonText}>Checkout</Text>
+            </Pressable>
+          </>
+        )}
+      </View>
     </SafeAreaView>
   );
 };
