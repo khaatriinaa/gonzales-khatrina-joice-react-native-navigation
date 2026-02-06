@@ -1,5 +1,13 @@
 import React, { useMemo } from "react";
-import { View, Text, Pressable, FlatList, Switch, Image, Alert, } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  Switch,
+  Image,
+  Alert,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCart } from "../contexts/CartContext";
 import { useTheme } from "../contexts/ThemeContext";
@@ -56,24 +64,17 @@ const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
           ₱{item.price * item.quantity}
         </Text>
 
-        {/* Quantity stepper – no border */}
+        {/* Quantity stepper */}
         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
-          <Pressable 
-            onPress={handleDecrease}
-            hitSlop={12} 
-          >
-            <Icon 
-              name="remove-circle-outline" 
-              size={24} 
-              color={dark ? "#aaa" : "#666"} 
-            />
+          <Pressable onPress={handleDecrease} hitSlop={12}>
+            <Icon name="remove-circle-outline" size={24} color={dark ? "#aaa" : "#666"} />
           </Pressable>
 
-          <Text 
-            style={{ 
-              width: 40, 
-              textAlign: "center", 
-              fontSize: 16, 
+          <Text
+            style={{
+              width: 40,
+              textAlign: "center",
+              fontSize: 16,
               fontWeight: "600",
               color: dark ? "#fff" : "#000",
               marginHorizontal: 3,
@@ -82,15 +83,8 @@ const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
             {item.quantity}
           </Text>
 
-          <Pressable 
-            onPress={() => increase(item.id)}
-            hitSlop={12}
-          >
-            <Icon 
-              name="add-circle-outline" 
-              size={24} 
-              color={dark ? "#aaa" : "#666"} 
-            />
+          <Pressable onPress={() => increase(item.id)} hitSlop={12}>
+            <Icon name="add-circle-outline" size={24} color={dark ? "#aaa" : "#666"} />
           </Pressable>
         </View>
       </View>
@@ -102,42 +96,37 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
   const { cart, increase, decrease, total } = useCart();
   const { dark, toggleTheme } = useTheme();
 
-  // Memoize total calculation to prevent re-render
   const totalAmount = useMemo(() => total, [total]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
 
-
         {/* HEADER */}
-<View
-  style={{
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  }}
->
-  {/* Back button + title */}
-  <View style={{ flexDirection: "row", alignItems: "center" }}>
-    <Pressable onPress={() => navigation.goBack()} style={{ marginRight: 10 }}>
-      <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
-    </Pressable>
-    <Text style={[styles.title, { color: dark ? "#fff" : "#000" }]}>
-      SHOPPING BAG
-    </Text>
-  </View>
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
+          
+          {/* Back button */}
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={{ position: "absolute", left: 0 }}
+          >
+            <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
+          </Pressable>
 
-  {/* Theme toggle */}
-  <Switch
-    value={dark}
-    onValueChange={toggleTheme}
-    trackColor={{ false: "#ccc", true: "#555" }}
-    thumbColor={dark ? "#fff" : "#000"}
-  />
-</View>
+          {/* Shopping Bag title */}
+          <Text style={[styles.title, { flex: 1, textAlign: "center", color: dark ? "#fff" : "#000" }]}>
+            SHOPPING BAG
+          </Text>
 
+          {/* Theme toggle */}
+          <Switch
+            value={dark}
+            onValueChange={toggleTheme}
+            trackColor={{ false: "#ccc", true: "#555" }}
+            thumbColor={dark ? "#fff" : "#000"}
+            style={{ position: "absolute", right: 0 }}
+          />
+        </View>
 
         {cart.length === 0 ? (
           <View
