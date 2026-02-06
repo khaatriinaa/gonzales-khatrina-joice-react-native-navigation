@@ -13,6 +13,7 @@ import { useCart } from "../contexts/CartContext";
 import { useTheme } from "../contexts/ThemeContext";
 import { styles } from "../styles/globalStyles";
 import { ScreenProps } from "../navigation/Props";
+import Icon from "react-native-vector-icons/Ionicons";
 
 // Memoized Cart Item (unchanged)
 const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
@@ -63,17 +64,44 @@ const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
           ₱{item.price * item.quantity}
         </Text>
 
-        <View style={{ flexDirection: "row", marginTop: 8 }}>
-          <Pressable onPress={handleDecrease}>
-            <Text style={{ fontSize: 18 }}>➖</Text>
-          </Pressable>
-          <Text style={{ marginHorizontal: 15, color: dark ? "#fff" : "#000" }}>
-            {item.quantity}
-          </Text>
-          <Pressable onPress={() => increase(item.id)}>
-            <Text style={{ fontSize: 18 }}>➕</Text>
-          </Pressable>
-        </View>
+<View
+  style={{
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: dark ? "#222" : "#f0f0f0",
+    borderRadius: 20,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: dark ? "#444" : "#ddd",
+  }}
+>
+  <Pressable 
+    onPress={handleDecrease}
+    style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }, { padding: 6 }]}
+  >
+    <Icon name="remove-circle-outline" size={22} color={dark ? "#aaa" : "#555"} />
+  </Pressable>
+
+  <Text 
+    style={{ 
+      minWidth: 30, 
+      textAlign: "center", 
+      fontSize: 16, 
+      fontWeight: "600",
+      color: dark ? "#fff" : "#000" 
+    }}
+  >
+    {item.quantity}
+  </Text>
+
+  <Pressable 
+    onPress={() => increase(item.id)}
+    style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }, { padding: 6 }]}
+  >
+    <Icon name="add-circle-outline" size={22} color={dark ? "#aaa" : "#555"} />
+  </Pressable>
+</View>
       </View>
     </View>
   );
@@ -121,7 +149,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               style={{
                 fontSize: 18,
                 color: dark ? "#aaa" : "#666",
-                marginBottom: 20,
+                marginBottom:5,
                 textAlign: "center",
               }}
             >
@@ -133,8 +161,8 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                 styles.button,
                 {
                   backgroundColor: dark ? "#444" : "#000",
-                  paddingVertical: 14,
-                  paddingHorizontal: 32,
+                  paddingVertical: 13,
+                  paddingHorizontal: 40,
                 },
               ]}
               onPress={() => navigation.navigate("Home")} // or wherever your product list is (e.g. Home tab)
