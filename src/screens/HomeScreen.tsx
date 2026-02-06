@@ -1,21 +1,12 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  Pressable,
-  Switch,
-  Alert,
-  Image,
-  TextInput,
-} from "react-native";
+import { View, Text, FlatList, Pressable, Switch, Alert, Image, TextInput, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ScreenProps } from "../navigation/Props";
 import { useCart } from "../contexts/CartContext";
 import { useTheme } from "../contexts/ThemeContext";
 import { styles } from "../styles/globalStyles";
-import { PRODUCTS } from "../data/products";  // ← new import
+import { PRODUCTS } from "../data/products"; 
 
 const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
   const { cart, addToCart } = useCart();

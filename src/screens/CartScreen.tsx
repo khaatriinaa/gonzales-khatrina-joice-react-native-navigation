@@ -1,13 +1,5 @@
 import React, { useMemo } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  FlatList,
-  Switch,
-  Image,
-  Alert,
-} from "react-native";
+import { View, Text, Pressable, FlatList, Switch, Image, Alert, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCart } from "../contexts/CartContext";
 import { useTheme } from "../contexts/ThemeContext";

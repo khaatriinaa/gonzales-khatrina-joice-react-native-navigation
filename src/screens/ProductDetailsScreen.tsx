@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  ScrollView,
-  Switch,
-  Alert,
-} from "react-native";
+import { View, Text, Image, Pressable, ScrollView, Switch, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ScreenProps } from "../navigation/Props";
@@ -22,13 +14,16 @@ const ProductDetailsScreen: React.FC<
   const { cart, addToCart } = useCart();
   const { dark, toggleTheme } = useTheme();
 
-const cartItem = cart.find(c => c.id === product.id);
-const cartQty = cartItem?.quantity ?? 0;
-const isOutOfStock = product.stock === 0 || cartQty >= product.stock;
+  const cartItem = cart.find(c => c.id === product.id);
+  const cartQty = cartItem?.quantity ?? 0;
+  const availableStock = product.stock - cartQty;
+  const isOutOfStock = availableStock <= 0;
 
   const handleAddToCart = () => {
-    addToCart(product);
-    Alert.alert("Added to Cart 🛒", product.name);
+    if (!isOutOfStock) {
+      addToCart(product);
+      Alert.alert("Added to Cart 🛒", product.name);
+    }
   };
 
   return (
@@ -94,6 +89,13 @@ const isOutOfStock = product.stock === 0 || cartQty >= product.stock;
               ₱{product.price}
             </Text>
 
+            {/* STOCK DISPLAY */}
+            <Text style={{ color: dark ? "#ccc" : "#555", marginBottom: 10 }}>
+              {availableStock > 0
+                ? `Stock available: ${availableStock}`
+                : "Out of Stock"}
+            </Text>
+
             <Text style={{ color: dark ? "#ccc" : "#555" }}>
               {product.description}
             </Text>
@@ -117,22 +119,21 @@ const isOutOfStock = product.stock === 0 || cartQty >= product.stock;
             style={[
               styles.button,
               {
-                backgroundColor:
-                  product.stock === 0
-                    ? "#999"
-                    : dark
-                    ? "#444"
-                    : "#000",
+                backgroundColor: isOutOfStock
+                  ? "#999"
+                  : dark
+                  ? "#444"
+                  : "#000",
               },
             ]}
             onPress={handleAddToCart}
-            disabled={product.stock === 0 || (cart.find(c => c.id === product.id)?.quantity ?? 0) >= product.stock}
+            disabled={isOutOfStock}
           >
             <Text style={styles.buttonText}>
-              {product.stock === 0
+              {isOutOfStock
                 ? "Out of Stock"
-                : cart.find((c) => c.id === product.id)
-                ? `Add to Cart (${cart.find((c) => c.id === product.id)?.quantity})`
+                : cartQty > 0
+                ? `Add to Cart (${cartQty})`
                 : "Add to Cart"}
             </Text>
           </Pressable>
