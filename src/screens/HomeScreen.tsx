@@ -22,6 +22,7 @@ const PRODUCTS = [
     name: "Brooklyn Graphic Tee",
     price: 499,
     image: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT1UgCXuX_dA-PqgUdl0k6bf_bz0kVAplEsmlTIGEUb_JggyHdT3uifz_46fxkVN3REuQGaxyFDca7Z-B_w5jSWxmWPVE93Wg",
+    description: "Street-inspired cotton tee with a relaxed fit. Lightweight and breathable for everyday wear.",
   },
   {
     id: 2,
@@ -154,6 +155,10 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
     Alert.alert("Added to Cart 🛒", item.name);
   };
 
+  const goToDetails = (item: any) => {
+  navigation.navigate("ProductDetails", { product: item });
+};
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
@@ -210,10 +215,12 @@ const HomeScreen: React.FC<ScreenProps<"Home">> = ({ navigation }) => {
                 { width: "48%", backgroundColor: dark ? "#1a1a1a" : "#f2f2f2" },
               ]}
             >
-              <Image
-                source={{ uri: item.image }}
-                style={{ width: "100%", height: 120, borderRadius: 8 }}
-              />
+              <Pressable onPress={() => goToDetails(item)}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={{ width: "100%", height: 120, borderRadius: 8 }}
+                />
+              </Pressable>
               <Text
                 style={{ fontWeight: "bold", marginTop: 8, color: dark ? "#fff" : "#000" }}
               >

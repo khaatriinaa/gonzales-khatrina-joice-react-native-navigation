@@ -2,18 +2,36 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
-import { enableScreens } from "react-native-screens";
 
 import HomeScreen from "../screens/HomeScreen";
 import CartScreen from "../screens/CartScreen";
+import ProductDetailsScreen from "../screens/ProductDetailsScreen";
 import CheckoutScreen from "../screens/CheckoutScreen";
 import { useTheme } from "../contexts/ThemeContext";
 import { useCart } from "../contexts/CartContext";
 
-//enableScreens(true);
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+// Stack for Home tab
+const HomeStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeMain" component={HomeScreen} />
+      <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+    </Stack.Navigator>
+  );
+};
+
+// Stack for Cart tab
+const CartStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="CartMain" component={CartScreen} />
+      <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const MainTabs = () => {
   const { dark } = useTheme();
@@ -21,7 +39,7 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
-    detachInactiveScreens={false}
+      detachInactiveScreens={false}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: dark ? "#fff" : "#1E90FF",
@@ -34,7 +52,7 @@ const MainTabs = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
@@ -43,7 +61,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name="Cart"
-        component={CartScreen}
+        component={CartStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="cart" size={size} color={color} />
@@ -59,6 +77,7 @@ const MainTabs = () => {
   );
 };
 
+// Only keep Checkout in the root stack (if needed)
 const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
