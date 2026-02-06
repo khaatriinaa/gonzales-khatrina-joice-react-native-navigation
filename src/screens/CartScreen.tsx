@@ -31,7 +31,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
     <View
       style={[
         styles.card,
-        { flexDirection: "row", alignItems: "center", backgroundColor: dark ? "#1a1a1a" : "#f2f2f2" },
+        { flexDirection: "row", alignItems: "center", backgroundColor: dark ? "#1a1a1a" : "#f2f2f2", marginBottom: 10 },
       ]}
     >
       <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 8, marginRight: 12 }} />
@@ -42,7 +42,9 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
           <Pressable onPress={() => handleDecrease(item)}>
             <Icon name="remove-circle-outline" size={24} color={dark ? "#aaa" : "#666"} />
           </Pressable>
-          <Text style={{ width: 40, textAlign: "center", fontSize: 16, color: dark ? "#fff" : "#000", marginHorizontal: 3 }}>{item.quantity}</Text>
+          <Text style={{ width: 40, textAlign: "center", fontSize: 16, color: dark ? "#fff" : "#000", marginHorizontal: 3 }}>
+            {item.quantity}
+          </Text>
           <Pressable onPress={() => increase(item.id)}>
             <Icon name="add-circle-outline" size={24} color={dark ? "#aaa" : "#666"} />
           </Pressable>
@@ -54,14 +56,25 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       {/* TOP SPACE FOR BACK, TITLE, TOGGLE */}
-      <View style={{ height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, borderBottomWidth: 1, borderColor: dark ? "#333" : "#ddd" }}>
+      <View
+        style={{
+          height: 80,
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 16,
+          borderBottomWidth: 1,
+          borderColor: dark ? "#333" : "#ddd",
+        }}
+      >
         {/* Back Button */}
         <Pressable onPress={() => navigation.goBack()}>
-          <Icon name="chevron-back-outline" size={24} color={dark ? "#fff" : "#000"} />
+          <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
         </Pressable>
 
         {/* Title */}
-        <Text style={{ fontSize: 20, fontWeight: "bold", color: dark ? "#fff" : "#000" }}>SHOPPING BAG</Text>
+        <Text style={{ flex: 1, textAlign: "center", fontSize: 20, fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
+          SHOPPING BAG
+        </Text>
 
         {/* Dark Mode Toggle */}
         <Switch
@@ -74,41 +87,12 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
 
       {/* CONTENT */}
       {cart.length === 0 ? (
-        <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              paddingHorizontal: 40,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                color: dark ? "#aaa" : "#666",
-                marginBottom: 5,
-                textAlign: "center",
-              }}
-            >
-              Your cart is empty.
-            </Text>
-
-            <Pressable
-              style={[
-                styles.button,
-                {
-                  backgroundColor: dark ? "#444" : "#000",
-                  paddingVertical: 13,
-                  paddingHorizontal: 40,
-                },
-              ]}
-              onPress={() => navigation.navigate("Home")}
-            >
-              <Text style={[styles.buttonText, { fontSize: 16 }]}>
-                Browse Items
-              </Text>
-            </Pressable>
-          </View>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 20 }}>
+          <Text style={{ fontSize: 18, color: dark ? "#aaa" : "#666", marginBottom: 10 }}>Your cart is empty.</Text>
+          <Pressable onPress={() => navigation.navigate("Home")} style={{ padding: 12, backgroundColor: dark ? "#444" : "#000", borderRadius: 8 }}>
+            <Text style={{ color: "#fff", textAlign: "center" }}>Browse Items</Text>
+          </Pressable>
+        </View>
       ) : (
         <FlatList
           contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
@@ -120,11 +104,25 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
 
       {/* FIXED FOOTER */}
       {cart.length > 0 && (
-        <View style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 16, borderTopWidth: 1, borderColor: dark ? "#333" : "#ddd", backgroundColor: dark ? "#000" : "#fff" }}>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: 16,
+            borderTopWidth: 1,
+            borderColor: dark ? "#333" : "#ddd",
+            backgroundColor: dark ? "#000" : "#fff",
+          }}
+        >
           <Text style={{ fontWeight: "bold", marginBottom: 10, color: dark ? "#fff" : "#000" }}>Total: ₱{totalAmount}</Text>
-          <Pressable onPress={() => navigation.navigate("Checkout")} style={{ padding: 12, backgroundColor: dark ? "#444" : "#000", borderRadius: 8 }}>
-            <Text style={{ color: "#fff", textAlign: "center" }}>Checkout</Text>
-          </Pressable>
+            <Pressable
+              style={[styles.button, { marginTop: 10, backgroundColor: dark ? "#444" : "#000" }]}
+              onPress={() => navigation.navigate("Checkout")}
+            >
+              <Text style={styles.buttonText}>Checkout</Text>
+            </Pressable>
         </View>
       )}
     </SafeAreaView>

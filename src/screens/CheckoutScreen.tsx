@@ -33,14 +33,25 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       {/* TOP SPACE FOR BACK, TITLE, TOGGLE */}
-      <View style={{ height: 80, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, borderBottomWidth: 1, borderColor: dark ? "#333" : "#ddd" }}>
+      <View
+        style={{
+          height: 80,
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 16,
+          borderBottomWidth: 1,
+          borderColor: dark ? "#333" : "#ddd",
+        }}
+      >
         {/* Back Button */}
         <Pressable onPress={() => navigation.goBack()}>
-          <Icon name="chevron-back-outline" size={24} color={dark ? "#fff" : "#000"} />
+          <Icon name="chevron-back-outline" size={28} color={dark ? "#fff" : "#000"} />
         </Pressable>
 
         {/* Title */}
-        <Text style={{ fontSize: 20, fontWeight: "bold", color: dark ? "#fff" : "#000" }}>CHECKOUT</Text>
+        <Text style={{ flex: 1, textAlign: "center", fontSize: 20, fontWeight: "bold", color: dark ? "#fff" : "#000" }}>
+          CHECKOUT
+        </Text>
 
         {/* Dark Mode Toggle */}
         <Switch
@@ -51,12 +62,16 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
         />
       </View>
 
+      {/* SCROLLABLE CONTENT */}
       <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 140 }}>
         {cart.length === 0 ? (
           <Text style={{ color: dark ? "#fff" : "#000" }}>Your cart is empty.</Text>
         ) : (
           cart.map((item) => (
-            <View key={item.id} style={[styles.card, { flexDirection: "row", marginBottom: 10, backgroundColor: dark ? "#1a1a1a" : "#f2f2f2" }]}>
+            <View
+              key={item.id}
+              style={[styles.card, { flexDirection: "row", marginBottom: 10, backgroundColor: dark ? "#1a1a1a" : "#f2f2f2" }]}
+            >
               <Image source={{ uri: item.image }} style={{ width: 70, height: 70, borderRadius: 8, marginRight: 12 }} />
               <View style={{ flex: 1 }}>
                 <Text style={{ fontWeight: "bold", color: dark ? "#fff" : "#000" }}>{item.name}</Text>
@@ -70,11 +85,28 @@ const CheckoutScreen: React.FC<ScreenProps<"Checkout">> = ({ navigation }) => {
 
       {/* FIXED FOOTER */}
       {cart.length > 0 && (
-        <View style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 16, borderTopWidth: 1, borderColor: dark ? "#333" : "#ddd", backgroundColor: dark ? "#000" : "#fff" }}>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: 16,
+            borderTopWidth: 1,
+            borderColor: dark ? "#333" : "#ddd",
+            backgroundColor: dark ? "#000" : "#fff",
+          }}
+        >
           <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10, color: dark ? "#fff" : "#000" }}>Total: ₱{total}</Text>
-          <Pressable onPress={placeOrder} style={{ padding: 12, backgroundColor: dark ? "#444" : "#000", borderRadius: 8 }}>
-            <Text style={{ color: "#fff", textAlign: "center" }}>Place Order</Text>
-          </Pressable>
+            <Pressable
+              style={[
+                styles.button,
+                { backgroundColor: dark ? "#444" : "#000" },
+              ]}
+              onPress={placeOrder}
+            >
+              <Text style={styles.buttonText}>Place Order</Text>
+            </Pressable>
         </View>
       )}
 
