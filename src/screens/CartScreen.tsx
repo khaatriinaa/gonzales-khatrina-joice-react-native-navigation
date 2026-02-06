@@ -15,7 +15,7 @@ import { styles } from "../styles/globalStyles";
 import { ScreenProps } from "../navigation/Props";
 import Icon from "react-native-vector-icons/Ionicons";
 
-// Memoized Cart Item (unchanged)
+// Memoized Cart Item
 const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
   const handleDecrease = () => {
     if (item.quantity === 1) {
@@ -64,44 +64,43 @@ const CartItem = React.memo(({ item, increase, decrease, dark }: any) => {
           ₱{item.price * item.quantity}
         </Text>
 
-<View
-  style={{
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: dark ? "#222" : "#f0f0f0",
-    borderRadius: 20,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: dark ? "#444" : "#ddd",
-  }}
->
-  <Pressable 
-    onPress={handleDecrease}
-    style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }, { padding: 6 }]}
-  >
-    <Icon name="remove-circle-outline" size={22} color={dark ? "#aaa" : "#555"} />
-  </Pressable>
+        {/* Quantity stepper – no border */}
+        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
+          <Pressable 
+            onPress={handleDecrease}
+            hitSlop={12} // makes touch area larger without visual change
+          >
+            <Icon 
+              name="remove-circle-outline" 
+              size={24} 
+              color={dark ? "#aaa" : "#666"} 
+            />
+          </Pressable>
 
-  <Text 
-    style={{ 
-      minWidth: 30, 
-      textAlign: "center", 
-      fontSize: 16, 
-      fontWeight: "600",
-      color: dark ? "#fff" : "#000" 
-    }}
-  >
-    {item.quantity}
-  </Text>
+          <Text 
+            style={{ 
+              width: 40, 
+              textAlign: "center", 
+              fontSize: 16, 
+              fontWeight: "600",
+              color: dark ? "#fff" : "#000",
+              marginHorizontal: 12,
+            }}
+          >
+            {item.quantity}
+          </Text>
 
-  <Pressable 
-    onPress={() => increase(item.id)}
-    style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }, { padding: 6 }]}
-  >
-    <Icon name="add-circle-outline" size={22} color={dark ? "#aaa" : "#555"} />
-  </Pressable>
-</View>
+          <Pressable 
+            onPress={() => increase(item.id)}
+            hitSlop={12}
+          >
+            <Icon 
+              name="add-circle-outline" 
+              size={24} 
+              color={dark ? "#aaa" : "#666"} 
+            />
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -117,7 +116,6 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: dark ? "#000" : "#fff" }}>
       <View style={styles.container}>
-
         {/* BACK BUTTON */}
         <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
           <Text style={{ fontSize: 18, color: dark ? "#fff" : "#000" }}>← Back</Text>
@@ -149,7 +147,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
               style={{
                 fontSize: 18,
                 color: dark ? "#aaa" : "#666",
-                marginBottom:5,
+                marginBottom: 5,
                 textAlign: "center",
               }}
             >
@@ -165,7 +163,7 @@ const CartScreen: React.FC<ScreenProps<"Cart">> = ({ navigation }) => {
                   paddingHorizontal: 40,
                 },
               ]}
-              onPress={() => navigation.navigate("Home")} // or wherever your product list is (e.g. Home tab)
+              onPress={() => navigation.navigate("Home")}
             >
               <Text style={[styles.buttonText, { fontSize: 16 }]}>
                 Browse Items
